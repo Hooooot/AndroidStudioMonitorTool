@@ -15,9 +15,15 @@ rem limitations under the License.
 
 rem don't modify the caller's environment
 setlocal
+fltmc>nul
+if "%errorlevel%" NEQ "0" (goto UACPrompt) else (goto UACAdmin)
+:UACPrompt
+%1 start "" mshta vbscript:createobject("shell.application").shellexecute("""%~0""","::",,"runas",1)(window.close)&exit
+exit /B
+:UACAdmin
+set JAVA_HOME="%~dp0jre1.8.0_202"
+set JRE8_PATH="%~dp0jre1.8.0_202\bin"
 
-set JAVA_HOME="C:\Program Files\Android\Android Studio\jre"
-set JRE8_PATH="C:\Program Files\Android\Android Studio\jre\jre\bin"
 set PATH=%PATH%;%JRE8_PATH%
 
 rem Change current directory and drive to where the script is, to avoid
